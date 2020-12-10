@@ -1,0 +1,15 @@
+C:\Users\Istos\source\repos\Playlist builder\Playlist builder\bin\Debug\Lazy DJ.exe.config
+C:\Users\Istos\source\repos\Playlist builder\Playlist builder\bin\Debug\Lazy DJ.exe
+C:\Users\Istos\source\repos\Playlist builder\Playlist builder\bin\Debug\Lazy DJ.pdb
+C:\Users\Istos\source\repos\Playlist builder\Playlist builder\bin\Debug\Microsoft.WindowsAPICodePack.dll
+C:\Users\Istos\source\repos\Playlist builder\Playlist builder\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+C:\Users\Istos\source\repos\Playlist builder\Playlist builder\bin\Debug\Microsoft.WindowsAPICodePack.xml
+C:\Users\Istos\source\repos\Playlist builder\Playlist builder\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
+C:\Users\Istos\source\repos\Playlist builder\Playlist builder\obj\Debug\Playlist_builder.MainForm.resources
+C:\Users\Istos\source\repos\Playlist builder\Playlist builder\obj\Debug\Playlist_builder.Properties.Resources.resources
+C:\Users\Istos\source\repos\Playlist builder\Playlist builder\obj\Debug\Lazy DJ.csproj.GenerateResource.cache
+C:\Users\Istos\source\repos\Playlist builder\Playlist builder\obj\Debug\Lazy DJ.csproj.CoreCompileInputs.cache
+C:\Users\Istos\source\repos\Playlist builder\Playlist builder\obj\Debug\Lazy DJ.csproj.CopyComplete
+C:\Users\Istos\source\repos\Playlist builder\Playlist builder\obj\Debug\Lazy DJ.exe
+C:\Users\Istos\source\repos\Playlist builder\Playlist builder\obj\Debug\Lazy DJ.pdb
+C:\Users\Istos\source\repos\Playlist builder\Playlist builder\obj\Debug\Lazy DJ.csprojAssemblyReference.cache
