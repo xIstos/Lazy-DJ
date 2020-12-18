@@ -57,9 +57,7 @@ namespace Playlist_builder.Classes
                                 if (duration.TotalSeconds != 0)
                                 {
                                     var result = ShowDurationWarningMessage(category.Base.Name);
-                                    if (result)
-                                        GeneratePlaylist();
-                                    else
+                                    if (!result)
                                         return;
                                 }
                                 GeneratePlaylist();

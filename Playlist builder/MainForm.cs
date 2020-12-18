@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace Playlist_builder
 {
-    enum MoveDirection
+    enum RowDirection
     {
         up = -1,
         down = 1
@@ -36,24 +36,10 @@ namespace Playlist_builder
         private bool isDataGridViewInStartState = false;
         private IUILogicHelper logicHelper = SmartFactoryDI.GetSingletone<IUILogicHelper>();
 
-        private void OpenButton_Click(object sender, EventArgs e)
+        private void openButton_Click(object sender, EventArgs e)
         {
             OpenFolderBrowser();
-        }
-        private void AddButton_Click(object sender, EventArgs e)
-        {
-            string path = pathTextBox.Text;
-
-            if (Directory.Exists(path))
-            {
-                var newCategory = logicHelper.AddNewCategory(path);
-                AddNewRow(newCategory, newCategory.Id);
-                pathTextBox.Text = String.Empty;
-            }
-            else
-            {
-                pathIncorrectLabel.Visible = true;
-            }
+            AddNewCategory(pathTextBox.Text);
             UpdateOrderButtons();
         }
         private void GenerateButton_Click(object sender, EventArgs e)
@@ -112,13 +98,13 @@ namespace Playlist_builder
         }
         private void UpButton_Click(object sender, EventArgs e)
         {
-            MoveRow(MoveDirection.up);
+            MoveRow(RowDirection.up);
             categoriesDataGridView.Sort(this.categoriesDataGridView.Columns[5], ListSortDirection.Descending);
             UpdateOrderButtons();
         }
         private void DownButton_Click(object sender, EventArgs e)
         {
-            MoveRow(MoveDirection.down);
+            MoveRow(RowDirection.down);
             categoriesDataGridView.Sort(this.categoriesDataGridView.Columns[5], ListSortDirection.Descending);
             UpdateOrderButtons();
         }
@@ -143,7 +129,16 @@ namespace Playlist_builder
         {
             pathIncorrectLabel.Visible = false;
         }
-        public void OpenFolderBrowser()
+        private void PathTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                AddNewCategory(pathTextBox.Text);
+                UpdateOrderButtons();
+                e.Handled = e.SuppressKeyPress = true;
+            }
+        }
+        private void OpenFolderBrowser()
         {
             FolderBrowserDialog folderDlg = new FolderBrowserDialog();
             folderDlg.ShowNewFolderButton = false;
@@ -156,6 +151,20 @@ namespace Playlist_builder
                 browserDialogStartLocaton = folderDlg.SelectedPath;
                 Environment.SpecialFolder root = folderDlg.RootFolder;
             }
+        }
+        private void AddNewCategory(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                var newCategory = logicHelper.AddNewCategory(path);
+                AddNewRow(newCategory, newCategory.Id);
+                pathTextBox.Text = String.Empty;
+            }
+            else
+            {
+                pathIncorrectLabel.Visible = true;
+            }
+
         }
         private void DeleteCategory(int rowIndex)
         {
@@ -285,7 +294,7 @@ namespace Playlist_builder
                 downButton.Enabled = false;
             }
         }
-        private void MoveRow(MoveDirection direction)
+        private void MoveRow(RowDirection direction)
         {
             var selectedRow = categoriesDataGridView.SelectedRows[0];
             var tempSelected = selectedRow.Cells[5].Value;
@@ -299,5 +308,10 @@ namespace Playlist_builder
 
             logicHelper.SwapCategoriesID((int)tempSelected, (int)tempSecond);
         }
+       
+        
+        
+
+
     }
 }
