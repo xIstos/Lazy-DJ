@@ -31,6 +31,8 @@ namespace Playlist_builder
             sortByComboBox.DataSource = Enum.GetValues(typeof(SortEnum));
         }
 
+        private const int minuteInSeconds = 60;
+
         string browserDialogStartLocaton;
         private bool enableElementHelper = false;
         private bool isDataGridViewInStartState = false;
@@ -51,9 +53,10 @@ namespace Playlist_builder
         }
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            int minDuration = (int)minMinutesUpDown.Value * 60 + (int)minSecondUpDown.Value;
-            int maxDuration = (int)maxMinutesUpDown.Value * 60 + (int)maxSecondUpDown.Value;
+            int minDuration = (int)minMinutesUpDown.Value * minuteInSeconds + (int)minSecondUpDown.Value;
+            int maxDuration = (int)maxMinutesUpDown.Value * minuteInSeconds + (int)maxSecondUpDown.Value;
 
+            //if durations are valid
             if (minDuration == 0 || maxDuration == 0 || maxDuration >= minDuration)
             {
                 int id = (Int32)categoriesDataGridView.Rows[categoriesDataGridView.CurrentCell.RowIndex].Cells[5].Value;
@@ -110,7 +113,7 @@ namespace Playlist_builder
         }
         private void CategoriesDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            //check if is is last row
+            //check if it is last row
             if (categoriesDataGridView.Rows.Count == e.RowIndex + 1 || categoriesDataGridView.CurrentCell.Value == null)
             {
                 categoriesDataGridView.ClearSelection();
@@ -288,7 +291,8 @@ namespace Playlist_builder
                     }
                 }
             }
-            catch (Exception e)
+            // when last element deleted from list
+            catch (ArgumentOutOfRangeException)
             {
                 upButton.Enabled = false;
                 downButton.Enabled = false;
@@ -308,10 +312,7 @@ namespace Playlist_builder
 
             logicHelper.SwapCategoriesID((int)tempSelected, (int)tempSecond);
         }
-       
-        
-        
 
-
+   
     }
 }

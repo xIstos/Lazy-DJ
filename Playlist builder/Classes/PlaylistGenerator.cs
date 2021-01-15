@@ -30,7 +30,6 @@ namespace Playlist_builder.Classes
         {
             FilterSongsByDuration(categories);
 
-            //Sorting categories by Id
             categories = categories.OrderByDescending(x => x.Id).ToList();
 
             //Playlist generation

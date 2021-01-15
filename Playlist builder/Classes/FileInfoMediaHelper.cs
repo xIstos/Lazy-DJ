@@ -14,10 +14,7 @@ namespace Playlist_builder.Classes
         {
             Duration = new TimeSpan();
         }
-        private FileInfo _fileInfo;
-        public FileInfo FileInfo { get => _fileInfo; set => _fileInfo = value; }
-
-        private TimeSpan _duration;
-        public TimeSpan Duration { get => _duration; set => _duration = value; }
+        public FileInfo FileInfo { get; set; }
+        public TimeSpan Duration { get; set; }        
     }
 }

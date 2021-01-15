@@ -20,6 +20,9 @@ namespace Playlist_builder.Classes
         }
         private static Random rnd = new Random();
 
+        private const string sortingByName = "name";
+        private const string sortingByCreation = "creation";
+
         private int counter = 0;
         public string Name { get; set; }
         public string CategoryPath { get; set; }
@@ -72,11 +75,11 @@ namespace Playlist_builder.Classes
         }
         public void SortFiles()
         {
-            if (Sorting == "name")
+            if (Sorting == sortingByName)
             {
                 Files.OrderBy(x => x.FileInfo.Name);
             }
-            else if (Sorting == "creation")
+            else if (Sorting == sortingByCreation)
             {
                 Files.OrderBy(f => f.FileInfo.CreationTime);
             }
@@ -88,6 +91,8 @@ namespace Playlist_builder.Classes
         private static void Shuffle(List<IFileInfoMediaHelper> list)
         {
             int n = list.Count;
+
+            //Fisher–Yates shuffle algorithm
             while (n > 1)
             {
                 n--;
@@ -96,6 +101,7 @@ namespace Playlist_builder.Classes
                 list[k] = list[n];
                 list[n] = value;
             }
+
         }
     }
 }
