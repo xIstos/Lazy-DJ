@@ -33,7 +33,7 @@ namespace Playlist_builder.Classes
         {
             FilterSongsByDuration(categories);
 
-            categories = categories.OrderByDescending(x => x.Id).ToList();
+            categories = categories.OrderBy(x => x.Id).ToList();
 
             //Playlist generation
             while (playlistDuration.TotalSeconds == 0 || CurrentDuration < playlistDuration)

@@ -117,13 +117,11 @@ namespace Playlist_builder
         private void UpButton_Click(object sender, EventArgs e)
         {
             MoveRow(RowDirectionEnum.up);
-            categoriesDataGridView.Sort(this.categoriesDataGridView.Columns[5], ListSortDirection.Descending);
             UpdateOrderButtons();
         }
         private void DownButton_Click(object sender, EventArgs e)
         {
-            MoveRow(RowDirectionEnum.down);
-            categoriesDataGridView.Sort(this.categoriesDataGridView.Columns[5], ListSortDirection.Descending);
+            MoveRow(RowDirectionEnum.down);            
             UpdateOrderButtons();
         }
         private void CategoriesDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -224,7 +222,9 @@ namespace Playlist_builder
             {
                 DataGridViewRow row = (DataGridViewRow)categoriesDataGridView.Rows[categoriesDataGridView.Rows.Count - 1].Clone();
                 categoriesDataGridView.Rows.Add(CategoryToRow(category, row));
-                categoriesDataGridView.Sort(this.categoriesDataGridView.Columns[5], ListSortDirection.Descending);
+                categoriesDataGridView.Sort(this.categoriesDataGridView.Columns[5], ListSortDirection.Ascending);
+                ShowCategoryValuesInInterfaceElements(logicHelper.GetCategoryBuID(category.Id));
+                categoriesDataGridView.Rows[categoriesDataGridView.Rows.Count - 2].Selected = true;
             }
         }
         private void ShowCategoryValuesInInterfaceElements(ICategory category)
@@ -326,6 +326,8 @@ namespace Playlist_builder
             selectedRow.Cells[5].Value = tempSecond;
 
             logicHelper.SwapCategoriesID((int)tempSelected, (int)tempSecond);
+
+            categoriesDataGridView.Sort(this.categoriesDataGridView.Columns[5], ListSortDirection.Ascending);
         }
         private void ShowGenerationErrorMessage()
         {
