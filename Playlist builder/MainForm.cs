@@ -12,17 +12,12 @@ using System.Windows.Forms;
 
 namespace Playlist_builder
 {
-    enum RowDirection
+    enum RowDirectionEnum
     {
         up = -1,
         down = 1
     }
-    enum SortEnum
-    {
-        random = 1,
-        name = 2,
-        creation = 3
-    }
+    
     public partial class MainForm : Form
     {
         public MainForm()
@@ -101,13 +96,13 @@ namespace Playlist_builder
         }
         private void UpButton_Click(object sender, EventArgs e)
         {
-            MoveRow(RowDirection.up);
+            MoveRow(RowDirectionEnum.up);
             categoriesDataGridView.Sort(this.categoriesDataGridView.Columns[5], ListSortDirection.Descending);
             UpdateOrderButtons();
         }
         private void DownButton_Click(object sender, EventArgs e)
         {
-            MoveRow(RowDirection.down);
+            MoveRow(RowDirectionEnum.down);
             categoriesDataGridView.Sort(this.categoriesDataGridView.Columns[5], ListSortDirection.Descending);
             UpdateOrderButtons();
         }
@@ -298,7 +293,7 @@ namespace Playlist_builder
                 downButton.Enabled = false;
             }
         }
-        private void MoveRow(RowDirection direction)
+        private void MoveRow(RowDirectionEnum direction)
         {
             var selectedRow = categoriesDataGridView.SelectedRows[0];
             var tempSelected = selectedRow.Cells[5].Value;
@@ -312,7 +307,5 @@ namespace Playlist_builder
 
             logicHelper.SwapCategoriesID((int)tempSelected, (int)tempSecond);
         }
-
-   
     }
 }

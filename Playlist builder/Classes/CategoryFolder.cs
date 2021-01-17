@@ -8,6 +8,12 @@ using System.Linq;
 
 namespace Playlist_builder.Classes
 {
+    enum SortEnum
+    {
+        random,
+        name,
+        creation
+    }
     class CategoryFolder : ICategoryFolder
     {
         public CategoryFolder(string path)
