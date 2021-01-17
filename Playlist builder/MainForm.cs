@@ -40,11 +40,31 @@ namespace Playlist_builder
             UpdateOrderButtons();
         }
         private void GenerateButton_Click(object sender, EventArgs e)
-        {
+        {            
             var generator = SmartFactoryDI.GetInstance<IPlaylistGenerator>();
             logicHelper.PrepareFolderToNewGeneration();
             TimeSpan duration = new TimeSpan((int)playlistHoursUpDown.Value, (int)playlistMinutesUpDown.Value, 0);
-            generator.Generate(logicHelper.GetAllCategories(), duration);
+
+            try
+            {
+                var category = generator.PrepareData(logicHelper.GetAllCategories(), duration);
+                if(category != null)
+                {
+                    var warningResult = ShowDurationWarningMessage(category.Base.Name);
+                    if (warningResult)
+                        generator.GeneratePlaylist();
+                }
+                else
+                {
+                    generator.GeneratePlaylist();
+                }
+
+            }
+            catch (Exception)
+            {
+                ShowGenerationErrorMessage();
+            }
+            
         }
         private void SaveButton_Click(object sender, EventArgs e)
         {
@@ -306,6 +326,31 @@ namespace Playlist_builder
             selectedRow.Cells[5].Value = tempSecond;
 
             logicHelper.SwapCategoriesID((int)tempSelected, (int)tempSecond);
+        }
+        private void ShowGenerationErrorMessage()
+        {
+            MessageBox.Show(
+                    "Oops, there is some problem with playlist generation.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1,
+                    MessageBoxOptions.DefaultDesktopOnly);
+        }
+        private bool ShowDurationWarningMessage(string categoryName)
+        {
+            DialogResult result = MessageBox.Show(
+                    "There are not enough songs in: \n" + @"--> " + categoryName + @" <--" + "\n \n" + "Create playlist anyway?",
+                    "Warning",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button1,
+                    MessageBoxOptions.DefaultDesktopOnly);
+
+            if (result == DialogResult.Yes)
+                return true;
+
+            return false;
         }
     }
 }

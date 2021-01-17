@@ -9,6 +9,7 @@ namespace Playlist_builder.Interfaces
         List<string> NewNamesList { get; }
         List<IFileInfoMediaHelper> PlayList { get; }
 
-        void Generate(List<ICategory> categories, TimeSpan duration);
+        ICategory PrepareData(List<ICategory> categories, TimeSpan duration);
+        void GeneratePlaylist();
     }
 }

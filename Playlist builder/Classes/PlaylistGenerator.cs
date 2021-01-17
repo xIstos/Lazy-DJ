@@ -21,63 +21,53 @@ namespace Playlist_builder.Classes
 
         private const string outputFolderName = "Playlist";
 
-
         private TimeSpan CurrentDuration { get; set; }
         public List<IFileInfoMediaHelper> PlayList { get; private set; }
         public List<string> NewNamesList { get; private set; }
 
-        public void Generate(List<ICategory> categories, TimeSpan duration)
-        {
-            PrepareData(categories, duration);
-        }
-        private void PrepareData(List<ICategory> categories, TimeSpan duration)
+        /// <summary>
+        /// Prepares data for playlist generation
+        /// </summary>
+        /// <returns>Category which has not enough songs</returns>
+        public ICategory PrepareData(List<ICategory> categories, TimeSpan playlistDuration)
         {
             FilterSongsByDuration(categories);
 
             categories = categories.OrderByDescending(x => x.Id).ToList();
 
             //Playlist generation
-            while (duration.TotalSeconds == 0 || CurrentDuration < duration)
+            while (playlistDuration.TotalSeconds == 0 || CurrentDuration < playlistDuration)
             {
                 foreach (var category in categories)
                 {
-                    if (CurrentDuration > duration && duration.TotalSeconds != 0) break;
+                    if (CurrentDuration > playlistDuration && playlistDuration.TotalSeconds != 0) break;
                     var counter = category.Quantity;
                     while (counter > 0)
                     {
-                        if (CurrentDuration > duration && duration.TotalSeconds != 0) break;
-                        try
+                        if (CurrentDuration > playlistDuration && playlistDuration.TotalSeconds != 0) break;
+
+                        var song = category.Base.GetNextSong();
+                        if (song != null)
                         {
-                            var song = category.Base.GetNextSong();
-                            if (song != null)
-                            {
-                                PlayList.Add(song);
-                                NewNamesList.Add("[" + category.Base.Name + "] " + song.FileInfo.Name);
-                                CurrentDuration = CurrentDuration.Add(song.Duration);
-                            }
-                            else
-                            {
-                                if (duration.TotalSeconds != 0)
-                                {
-                                    var result = ShowDurationWarningMessage(category.Base.Name);
-                                    if (!result)
-                                        return;
-                                }
-                                GeneratePlaylist();
-                                return;
-                            }
+                            PlayList.Add(song);
+                            NewNamesList.Add("[" + category.Base.Name + "] " + song.FileInfo.Name);
+                            CurrentDuration = CurrentDuration.Add(song.Duration);
                         }
-                        catch (Exception)
+                        else
                         {
-                            ShowGenerationErrorMessage();
+                            if (playlistDuration.TotalSeconds != 0)
+                            {
+                                return category;
+                            }
+                            return null;
                         }
                         counter--;
                     }
                 }
             }
-            GeneratePlaylist();
+            return null;
         }
-        private void GeneratePlaylist()
+        public void GeneratePlaylist()
         {
             NumberSongs();
             var folderPath = CreateFolder().FullName;
@@ -152,32 +142,7 @@ namespace Playlist_builder.Classes
             for (int i = 0; ; i++)
                 if (number <= sizeTable[i])
                     return i + 1;
-        }
-        private void ShowGenerationErrorMessage()
-        {
-            MessageBox.Show(
-                    "Oops, there is some problem with playlist generation.",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error,
-                    MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.DefaultDesktopOnly);
-        }
-        private bool ShowDurationWarningMessage(string category)
-        {
-            DialogResult result = MessageBox.Show(
-                    "There are not enough songs in: \n" + @"--> " + category + @" <--" + "\n \n" + "Create playlist anyway?",
-                    "Warning",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning,
-                    MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.DefaultDesktopOnly);
-
-            if (result == DialogResult.Yes)
-                return true;
-
-            return false;
-        }
+        }       
         private TimeSpan GetDuration(string filePath)
         {
             using (var shell = ShellObject.FromParsingName(filePath))
