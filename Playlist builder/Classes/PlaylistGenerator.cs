@@ -18,6 +18,10 @@ namespace Playlist_builder.Classes
             PlayList = new List<IFileInfoMediaHelper>();
             NewNamesList = new List<string>();
         }
+
+        private const string outputFolderName = "Playlist";
+
+
         private TimeSpan CurrentDuration { get; set; }
         public List<IFileInfoMediaHelper> PlayList { get; private set; }
         public List<string> NewNamesList { get; private set; }
@@ -63,7 +67,7 @@ namespace Playlist_builder.Classes
                                 return;
                             }
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             ShowGenerationErrorMessage();
                         }
@@ -111,12 +115,12 @@ namespace Playlist_builder.Classes
         {
             var dateTime = DateTime.Now.ToShortDateString() + "  " + DateTime.Now.ToShortTimeString();
             dateTime = dateTime.Replace(":", ".");
-            if (System.IO.Directory.Exists("Playlist " + dateTime))
+            if (System.IO.Directory.Exists(outputFolderName + " " + dateTime))
             {
                 dateTime = DateTime.Now.ToShortDateString() + "  " + DateTime.Now.ToLongTimeString();
                 dateTime = dateTime.Replace(":", ".");
             }
-            DirectoryInfo di = Directory.CreateDirectory("Playlist " + dateTime);
+            DirectoryInfo di = Directory.CreateDirectory(outputFolderName + " " + dateTime);
             return di;
         }
         private void NumberSongs()
