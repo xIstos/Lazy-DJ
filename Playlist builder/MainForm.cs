@@ -33,7 +33,36 @@ namespace Playlist_builder
         private bool isDataGridViewInStartState = false;
         private IUILogicHelper logicHelper = SmartFactoryDI.GetSingletone<IUILogicHelper>();
 
-        private void openButton_Click(object sender, EventArgs e)
+        private void Button_Click(object sender, EventArgs e)
+        {           
+            Button button = (Button)sender;
+            switch (button.Name)
+            {
+                case "openButton":
+                    OpenButton_Click(sender, e);
+                    break;
+                case "saveButton":
+                    SaveButton_Click(sender, e);
+                    break;
+                case "generateButton":
+                    GenerateButton_Click(sender, e);
+                    break;
+                case "upButton":
+                    UpButton_Click(sender, e);
+                    break;
+                case "downButton":
+                    DownButton_Click(sender, e);
+                    break;
+                case "deleteButton":
+                    DeleteButton_Click(sender, e);
+                    break;
+                default:
+                    break;
+            }
+            labelForFocus.Focus();
+        }
+
+        private void OpenButton_Click(object sender, EventArgs e)
         {
             OpenFolderBrowser();
             AddNewCategory(pathTextBox.Text);
