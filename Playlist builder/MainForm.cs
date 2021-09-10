@@ -74,7 +74,7 @@ namespace Playlist_builder
             //if durations are valid
             if (minDuration == 0 || maxDuration == 0 || maxDuration >= minDuration)
             {
-                int id = (Int32)categoriesDataGridView.Rows[categoriesDataGridView.CurrentCell.RowIndex].Cells[5].Value;
+                int id = (int)categoriesDataGridView.Rows[categoriesDataGridView.SelectedRows[0].Index].Cells[5].Value;
                 var category = logicHelper.GetCategoryBuID(id);
 
                 category.Base.Name = categoryTextBox.Text;
@@ -224,6 +224,7 @@ namespace Playlist_builder
                 categoriesDataGridView.Rows.Add(CategoryToRow(category, row));
                 categoriesDataGridView.Sort(this.categoriesDataGridView.Columns[5], ListSortDirection.Ascending);
                 ShowCategoryValuesInInterfaceElements(logicHelper.GetCategoryBuID(category.Id));
+                categoriesDataGridView.CurrentCell = categoriesDataGridView.Rows[categoriesDataGridView.Rows.Count - 2].Cells[0];
                 categoriesDataGridView.Rows[categoriesDataGridView.Rows.Count - 2].Selected = true;
             }
         }
